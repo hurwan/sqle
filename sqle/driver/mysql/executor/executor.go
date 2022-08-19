@@ -39,6 +39,9 @@ type BaseConn struct {
 func newConn(entry *logrus.Entry, instance *mdriver.DSN, schema string) (*BaseConn, error) {
 	var db *sql.DB
 	var err error
+	if schema == "" {
+		schema = "information_schema"
+	}
 	db, err = sql.Open("mysql", fmt.Sprintf("%s:%s@tcp(%s:%s)/%s?timeout=%s&charset=utf8&parseTime=True&loc=Local",
 		instance.User, instance.Password, instance.Host, instance.Port, schema, DAIL_TIMEOUT))
 	if err != nil {
